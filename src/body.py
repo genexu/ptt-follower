@@ -10,9 +10,13 @@ class Body(object):
     """Docstring For Body."""
     def __init__(self):
         super(Body, self).__init__()
-        self.follow_id_list = FollowIdList()
+        self.follow_id_list = FollowIdList(change_focus_id = self.on_change_focus_id)
         self.follow_id_board_list = FollowIdBoardList()
         self.follow_id_post_list = FollowIdPostList()
+
+    def on_change_focus_id(self, id):
+        self.follow_id_board_list.update_id_index(id)
+        self.follow_id_board_list.change_follow_id()
 
     def add_new_id(self, id):
         self.follow_id_list.add(id)
