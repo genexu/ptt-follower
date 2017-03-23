@@ -14,5 +14,8 @@ class Body(object):
         self.follow_id_board_list = FollowIdBoardList()
         self.follow_id_post_list = FollowIdPostList()
 
+    def add_new_id(self, id):
+        self.follow_id_list.add(id)
+
     def render(self):
         return urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.follow_id_list.render()), (WEIGHT, SIDEBAR_WEIGHT, self.follow_id_board_list.render()), self.follow_id_post_list.render()])

@@ -3,19 +3,27 @@ import json
 
 class FollowIdList(object):
     """Docstring For Follow_Id_List."""
-    def __init__(self, list_item = []):
+    def __init__(self):
         super(FollowIdList, self).__init__()
-        self.list_item = list_item
-
-    def render(self):
+        json_data_list = []
+        list_item = []
         with open('data.json') as data_file:
             data_loaded = json.load(data_file)
             for f in data_loaded['follow']:
-                self.list_item.append(f['id'])
+                json_data_list.append(f['id'])
 
-        id_list_item = [urwid.Text('Follow Id List'), urwid.Divider()]
-        for user_id in self.list_item:
+        for user_id in json_data_list:
             button = urwid.Button(user_id)
-            id_list_item.append(button)
+            list_item.append(button)
 
-        return urwid.ListBox(urwid.SimpleFocusListWalker(id_list_item))
+        list_item.insert(0, urwid.Divider())
+        list_item.insert(0, urwid.Text('ID'))
+
+        self.list_walker = urwid.SimpleFocusListWalker(list_item)
+        self.output = urwid.ListBox(self.list_walker)
+
+    def add(self, id):
+        self.list_walker.append(urwid.Button(id))
+
+    def render(self):
+        return self.output
