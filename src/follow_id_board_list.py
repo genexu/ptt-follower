@@ -34,5 +34,9 @@ class FollowIdBoardList(object):
     def update_id_index(self, index):
         self.id_index = index
 
+    def add(self, board):
+        button = urwid.Button(board)
+        self.list_walker.append(button)
+
     def render(self):
         return self.output

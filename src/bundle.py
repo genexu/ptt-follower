@@ -29,6 +29,11 @@ class Bundle(object):
         data['follow'].append(id_data)
         self.write_json_data(data)
 
+    def save_board(self, id_index, board):
+        data = self.read_json_data()
+        data['follow'][id_index]['board'].append(board)
+        self.write_json_data(data)
+
     def read_json_data(self):
         with open('data.json', 'r') as data_file:
             return json.load(data_file)
@@ -63,6 +68,12 @@ class Bundle(object):
                 new_id = self.footer.output.focus.edit_text
                 self.save_id(new_id)
                 self.body.add_new_id(new_id)
+
+            if self.status in (ADD_NEW_BOARD):
+                id_index = self.body.follow_id_board_list.id_index
+                new_board = self.footer.output.focus.edit_text
+                self.save_board(id_index, new_board)
+                self.body.add_new_board(new_board)
 
             if self.status in (ADD_NEW_ID, ADD_NEW_BOARD):
                 self.status = NORMAL
