@@ -1,41 +1,37 @@
 import urwid
 import json
 
+TITLE_AND_DIV_ROW = 2
+
 class FollowIdBoardList(object):
     """Docstring For FollowIdBoardList."""
-    def __init__(self, id_index = 0, list_item = []):
+    def __init__(self, change_focus_board):
         super(FollowIdBoardList, self).__init__()
-        self.id_index = id_index
-        self.list_walker = urwid.SimpleFocusListWalker(self.gen_list())
-        self.output = urwid.ListBox(self.list_walker)
-
-    def change_follow_id(self):
-        list_item = self.gen_list()
-        del self.list_walker[:]
-        for item in list_item:
-            self.list_walker.append(item)
-
-    def gen_list(self):
         json_data_list = []
         list_item = []
         with open('data.json') as data_file:
             data_loaded = json.load(data_file)
-            json_data_list = data_loaded['follow'][self.id_index]['board']
-
+            for f in data_loaded['follow']:
+                json_data_list.append(f['board'])
         for board in json_data_list:
             button = urwid.Button(board)
+            urwid.connect_signal(button, 'click', self.on_board_clicked)
             list_item.append(button)
 
         list_item.insert(0, urwid.Divider())
         list_item.insert(0, urwid.Text('BOARD'))
 
-        return list_item
+        self.change_focus_board = change_focus_board
+        self.list_walker = urwid.SimpleFocusListWalker(list_item)
+        self.output = urwid.ListBox(self.list_walker)
 
-    def update_id_index(self, index):
-        self.id_index = index
+    def on_board_clicked(self, button):
+        board_position = self.output.focus_position
+        self.change_focus_board(board_position - TITLE_AND_DIV_ROW)
 
     def add(self, board):
         button = urwid.Button(board)
+        urwid.connect_signal(button, 'click', self.on_board_clicked)
         self.list_walker.append(button)
 
     def render(self):

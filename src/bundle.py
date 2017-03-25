@@ -18,20 +18,18 @@ class Bundle(object):
         self.status = NORMAL
         self.output = urwid.Frame(self.body.render(), header=self.header.render(), footer=self.footer.render(), focus_part='body')
 
-    def save_id(self, id):
-        id_data = {
-            'id': id,
-            'board': [],
-            'newest_post_timestamp': 0
-        }
-
+    def save_id(self, board_index, id):
         data = self.read_json_data()
-        data['follow'].append(id_data)
+        data['follow'][board_index]['id'].append(id)
         self.write_json_data(data)
 
-    def save_board(self, id_index, board):
+    def save_board(self, board):
+        board_data = {
+            'board': board,
+            'id': []
+        }
         data = self.read_json_data()
-        data['follow'][id_index]['board'].append(board)
+        data['follow'].append(board_data)
         self.write_json_data(data)
 
     def read_json_data(self):
@@ -65,14 +63,14 @@ class Bundle(object):
 
         if key in ('enter'):
             if self.status in (ADD_NEW_ID):
+                board_index = self.body.follow_id_list.board_index
                 new_id = self.footer.output.focus.edit_text
-                self.save_id(new_id)
+                self.save_id(board_index, new_id)
                 self.body.add_new_id(new_id)
 
             if self.status in (ADD_NEW_BOARD):
-                id_index = self.body.follow_id_board_list.id_index
                 new_board = self.footer.output.focus.edit_text
-                self.save_board(id_index, new_board)
+                self.save_board(new_board)
                 self.body.add_new_board(new_board)
 
             if self.status in (ADD_NEW_ID, ADD_NEW_BOARD):

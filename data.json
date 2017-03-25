@@ -1,7 +1,9 @@
 {
-  "follow": [ {
-    "id": "genexu1117",
-    "board": [ "Test", "Soft_Job" ],
-    "newest_post_timestamp": 0
-    } ]
+  "follow": [{
+      "board": "Test",
+      "id": [ "genexu1117" ]
+    },{
+      "board": "Soft_Job",
+      "id": [ "genexu1117" ]
+    }]
 }
