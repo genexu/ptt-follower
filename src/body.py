@@ -13,6 +13,7 @@ class Body(object):
         self.follow_id_list = FollowIdList()
         self.follow_id_board_list = FollowIdBoardList(change_focus_board = self.on_change_focus_board)
         self.follow_id_post_list = FollowIdPostList()
+        self.output = urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.follow_id_board_list.output), (WEIGHT, SIDEBAR_WEIGHT, self.follow_id_list.output), self.follow_id_post_list.output])
 
     def on_change_focus_board(self, id):
         self.follow_id_list.update_board_index(id)
@@ -23,6 +24,3 @@ class Body(object):
 
     def add_new_board(self, board):
         self.follow_id_board_list.add(board)
-
-    def render(self):
-        return urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.follow_id_board_list.render()), (WEIGHT, SIDEBAR_WEIGHT, self.follow_id_list.output), self.follow_id_post_list.render()])

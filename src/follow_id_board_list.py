@@ -33,6 +33,3 @@ class FollowIdBoardList(object):
         button = urwid.Button(board)
         urwid.connect_signal(button, 'click', self.on_board_clicked)
         self.list_walker.append(button)
-
-    def render(self):
-        return self.output

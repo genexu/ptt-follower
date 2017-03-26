@@ -38,6 +38,3 @@ class Footer(object):
 
     def input_response(self, key):
         self.input_response_text.set_text('Response Input: %s' %(repr(key)))
-
-    def render(self):
-        return self.output

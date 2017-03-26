@@ -16,7 +16,7 @@ class Bundle(object):
         self.body = Body()
         self.footer = Footer()
         self.status = NORMAL
-        self.output = urwid.Frame(self.body.render(), header=self.header.render(), footer=self.footer.render(), focus_part='body')
+        self.output = urwid.Frame(self.body.output, header=self.header.output, footer=self.footer.output, focus_part='body')
 
     def save_id(self, board_index, id):
         data = self.read_json_data()
@@ -39,9 +39,6 @@ class Bundle(object):
     def write_json_data(self, data):
         with open('data.json', 'w') as data_file:
             json.dump(data, data_file)
-
-    def render(self):
-        return self.output
 
     def globle_input_listener(self, key):
         self.footer.input_response(key)
