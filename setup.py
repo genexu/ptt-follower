@@ -6,7 +6,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'urwid'
+        'urwid',
+        'beautifulsoup4',
+        'requests'
     ],
     entry_points='''
         [console_scripts]
