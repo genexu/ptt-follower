@@ -60,7 +60,7 @@ class Bundle(object):
 
         if key in ('enter'):
             if self.status in (ADD_NEW_ID):
-                board_index = self.body.follow_id_list.board_index
+                board_index = self.body.id_list.board_index
                 new_id = self.footer.output.focus.edit_text
                 self.save_id(board_index, new_id)
                 self.body.add_new_id(new_id)

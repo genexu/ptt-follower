@@ -3,10 +3,10 @@ import json
 
 TITLE_AND_DIV_ROW = 2
 
-class FollowIdList(object):
-    """Docstring For Follow_Id_List."""
+class IdList(object):
+    """Docstring For id_list."""
     def __init__(self, change_focus_id):
-        super(FollowIdList, self).__init__()
+        super(IdList, self).__init__()
         self.change_focus_id = change_focus_id
         self.board_index = 0
         list_item = []
