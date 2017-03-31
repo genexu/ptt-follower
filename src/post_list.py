@@ -4,10 +4,10 @@ import requests
 from bs4 import BeautifulSoup
 from crawler import Crawler
 
-class FollowIdPostList(object):
-    """Docstring For FollowIdPostList."""
+class PostList(object):
+    """Docstring For PostList."""
     def __init__(self, index = 0, board = 'Test', ids = []):
-        super(FollowIdPostList, self).__init__()
+        super(PostList, self).__init__()
         self.index = index
         self.ids = ids
         self.board = board
