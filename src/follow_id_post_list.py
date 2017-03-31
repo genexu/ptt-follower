@@ -2,82 +2,55 @@ import urwid
 import json
 import requests
 from bs4 import BeautifulSoup
+from crawler import Crawler
 
 class FollowIdPostList(object):
     """Docstring For FollowIdPostList."""
-    def __init__(self, index = 0):
+    def __init__(self, index = 0, board = 'Test', ids = []):
         super(FollowIdPostList, self).__init__()
         self.index = index
-        board = ''
-        id = []
-        post_list_item = []
+        self.ids = ids
+        self.board = board
+
         with open('data.json') as data_file:
             data_loaded = json.load(data_file)
-            board = data_loaded['follow'][0]['board']
-            id = data_loaded['follow'][0]['id']
+            self.board = data_loaded['follow'][0]['board']
+            self.ids = data_loaded['follow'][0]['id']
 
-        post_list = arr = [[] for _ in range(len(id))]
+        crawler = Crawler(board = self.board, ids = self.ids)
+        posts = crawler.request()
 
-        domain = 'https://www.ptt.cc/bbs/'
-        url = domain + board + '/index.html'
+        post_list = []
+        for post in posts[self.index]:
+            button = urwid.Button(post.title)
+            post_list.append(button)
 
-        r = requests.get(url)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        posts = soup.find_all('div', class_="r-ent")
+        post_list.insert(0, urwid.Divider())
+        post_list.insert(0, urwid.Text('POST'))
 
-        for post in posts:
-            title = post.find('div', class_="title").get_text().strip()
-            meta = post.find('div', class_='meta')
-            author = meta.find('div', class_='author').get_text()
-
-            if author != '-' and author in id:
-                post_list[id.index(author)].append(author + title)
-
-        for post in post_list[self.index]:
-            button = urwid.Button(post)
-            post_list_item.append(button)
-
-        post_list_item.insert(0, urwid.Divider())
-        post_list_item.insert(0, urwid.Text('POST'))
-
-        self.list_walker = urwid.SimpleFocusListWalker(post_list_item)
+        self.list_walker = urwid.SimpleFocusListWalker(post_list)
         self.output = urwid.ListBox(self.list_walker)
 
     def update_id_index(self, index):
         self.index = index
 
     def render(self):
-        id = []
-        post_list_item = []
         with open('data.json') as data_file:
             data_loaded = json.load(data_file)
-            board = data_loaded['follow'][0]['board']
-            id = data_loaded['follow'][0]['id']
+            self.board = data_loaded['follow'][0]['board']
+            self.id = data_loaded['follow'][0]['id']
 
-        post_list = arr = [[] for _ in range(len(id))]
+        crawler = Crawler(board = self.board, ids = self.ids)
+        posts = crawler.request()
 
-        domain = 'https://www.ptt.cc/bbs/'
-        url = domain + board + '/index.html'
+        post_list = []
+        for post in posts[self.index]:
+            button = urwid.Button(post.title)
+            post_list.append(button)
 
-        r = requests.get(url)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        posts = soup.find_all('div', class_="r-ent")
-
-        for post in posts:
-            title = post.find('div', class_="title").get_text().strip()
-            meta = post.find('div', class_='meta')
-            author = meta.find('div', class_='author').get_text()
-
-            if author != '-' and author in id:
-                post_list[id.index(author)].append(author + title)
-
-        for post in post_list[self.index]:
-            button = urwid.Button(post)
-            post_list_item.append(button)
-
-        post_list_item.insert(0, urwid.Divider())
-        post_list_item.insert(0, urwid.Text('POST'))
+        post_list.insert(0, urwid.Divider())
+        post_list.insert(0, urwid.Text('POST'))
 
         del self.list_walker[:]
-        for item in post_list_item:
+        for item in post_list:
             self.list_walker.append(item)
