@@ -3,10 +3,10 @@ import json
 
 TITLE_AND_DIV_ROW = 2
 
-class FollowIdBoardList(object):
-    """Docstring For FollowIdBoardList."""
+class BoardList(object):
+    """Docstring For BoardList."""
     def __init__(self, change_focus_board):
-        super(FollowIdBoardList, self).__init__()
+        super(BoardList, self).__init__()
         json_data_list = []
         list_item = []
         with open('data.json') as data_file:
