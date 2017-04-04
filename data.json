@@ -5,5 +5,8 @@
     },{
       "board": "Soft_Job",
       "id": [ "genexu1117" ]
-    }]
+    }],
+    "settings": {
+      "crawl_number_of_page": 10
+    }
 }

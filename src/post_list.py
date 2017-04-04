@@ -6,13 +6,14 @@ from crawler import Crawler
 
 class PostList(object):
     """Docstring For PostList."""
-    def __init__(self, id_index = 0, board_index = 0, board = 'Test', ids = [], posts = []):
+    def __init__(self, id_index = 0, board_index = 0, board = 'Test', ids = [], posts = [], crawl_number_of_page = 10):
         super(PostList, self).__init__()
         self.id_index = id_index
         self.board_index = board_index
         self.ids = ids
         self.board = board
         self.posts = posts
+        self.crawl_number_of_page = crawl_number_of_page
 
         self.update_config()
         self.update_posts()
@@ -37,11 +38,18 @@ class PostList(object):
             data_loaded = json.load(data_file)
             self.board = data_loaded['follow'][self.board_index]['board']
             self.ids = data_loaded['follow'][self.board_index]['id']
+            self.crawl_number_of_page = data_loaded['settings']['crawl_number_of_page']
 
     def update_posts(self):
         self.update_config()
         crawler = Crawler(board = self.board, ids = self.ids)
         self.posts = crawler.request()
+
+        for page in range(self.crawl_number_of_page - 1):
+            crawler.url = crawler.domain + crawler.previous_page
+            previous_page_post = crawler.request()
+            for index in range(len(self.posts)):
+                self.posts[index].extend(previous_page_post[index])
 
     def render(self):
         self.update_config()
