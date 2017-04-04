@@ -15,9 +15,13 @@ class Body(object):
         self.post_list = PostList()
         self.output = urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.board_list.output), (WEIGHT, SIDEBAR_WEIGHT, self.id_list.output), self.post_list.output])
 
-    def on_change_focus_board(self, id):
-        self.id_list.update_board_index(id)
+    def on_change_focus_board(self, index):
+        self.id_list.update_board_index(index)
         self.id_list.render()
+        self.post_list.update_id_index(0)
+        self.post_list.update_board_index(index)
+        self.post_list.update_posts()
+        self.post_list.render()
 
     def on_change_focus_id(self, index):
         self.post_list.update_id_index(index)
