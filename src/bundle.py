@@ -41,24 +41,24 @@ class Bundle(object):
             json.dump(data, data_file)
 
     def globle_input_listener(self, key):
-        self.footer.input_response(key)
-        if key in ('I'):
+        self.footer.input_response(repr(key))
+        if repr(key) in ("'I'"):
             self.status = ADD_NEW_ID
             self.footer.add_new_id()
             self.output.focus_position = 'footer'
 
-        if key in ('B'):
+        if repr(key) in ("'B'"):
             self.status = ADD_NEW_BOARD
             self.footer.add_new_board()
             self.output.focus_position = 'footer'
 
-        if key in ('esc'):
+        if repr(key) in ("'esc'"):
             if self.status in (ADD_NEW_ID, ADD_NEW_BOARD):
                 self.status = NORMAL
                 self.footer.desc()
                 self.output.focus_position = 'body'
 
-        if key in ('enter'):
+        if repr(key) in ("'enter'"):
             if self.status in (ADD_NEW_ID):
                 board_index = self.body.id_list.board_index
                 new_id = self.footer.output.focus.edit_text
@@ -75,5 +75,5 @@ class Bundle(object):
                 self.footer.desc()
                 self.output.focus_position = 'body'
 
-        if key in ('q', 'Q'):
+        if repr(key) in ("'q'", "'Q'"):
             raise urwid.ExitMainLoop()
