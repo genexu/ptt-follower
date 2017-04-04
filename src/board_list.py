@@ -1,8 +1,6 @@
 import urwid
 import json
 
-TITLE_AND_DIV_ROW = 2
-
 class BoardList(object):
     """Docstring For BoardList."""
     def __init__(self, change_focus_board):
@@ -18,16 +16,13 @@ class BoardList(object):
             urwid.connect_signal(button, 'click', self.on_board_clicked)
             list_item.append(button)
 
-        list_item.insert(0, urwid.Divider())
-        list_item.insert(0, urwid.Text('BOARD'))
-
         self.change_focus_board = change_focus_board
         self.list_walker = urwid.SimpleFocusListWalker(list_item)
         self.output = urwid.ListBox(self.list_walker)
 
     def on_board_clicked(self, button):
         board_position = self.output.focus_position
-        self.change_focus_board(board_position - TITLE_AND_DIV_ROW)
+        self.change_focus_board(board_position)
 
     def add(self, board):
         button = urwid.Button(board)

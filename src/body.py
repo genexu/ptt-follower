@@ -13,7 +13,9 @@ class Body(object):
         self.board_list = BoardList(change_focus_board = self.on_change_focus_board)
         self.id_list = IdList(change_focus_id = self.on_change_focus_id)
         self.post_list = PostList()
-        self.output = urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.board_list.output), (WEIGHT, SIDEBAR_WEIGHT, self.id_list.output), self.post_list.output])
+        self.title = urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, urwid.Text('BOARD')), (WEIGHT, SIDEBAR_WEIGHT, urwid.Text('ID')), urwid.Text('POST')])
+        self.content = urwid.Columns([(WEIGHT, SIDEBAR_WEIGHT, self.board_list.output), (WEIGHT, SIDEBAR_WEIGHT, self.id_list.output), self.post_list.output])
+        self.output = urwid.Frame(self.content, header = self.title)
 
     def on_change_focus_board(self, index):
         self.id_list.update_board_index(index)

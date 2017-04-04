@@ -1,8 +1,6 @@
 import urwid
 import json
 
-TITLE_AND_DIV_ROW = 2
-
 class IdList(object):
     """Docstring For id_list."""
     def __init__(self, change_focus_id):
@@ -17,10 +15,6 @@ class IdList(object):
                 urwid.connect_signal(button, 'click', self.on_id_clicked)
                 list_item.append(button)
 
-        list_item.insert(0, urwid.Divider())
-        list_item.insert(0, urwid.Text('ID'))
-
-
         self.list_walker = urwid.SimpleFocusListWalker(list_item)
         self.output = urwid.ListBox(self.list_walker)
 
@@ -29,7 +23,7 @@ class IdList(object):
 
     def on_id_clicked(self, button):
         id_position = self.output.focus_position
-        self.change_focus_id(id_position - TITLE_AND_DIV_ROW)
+        self.change_focus_id(id_position)
 
     def add(self, id):
         button = urwid.Button(id)
@@ -46,9 +40,6 @@ class IdList(object):
             button = urwid.Button(id)
             urwid.connect_signal(button, 'click', self.on_id_clicked)
             list_item.append(button)
-
-        list_item.insert(0, urwid.Divider())
-        list_item.insert(0, urwid.Text('ID'))
 
         del self.list_walker[:]
         for item in list_item:

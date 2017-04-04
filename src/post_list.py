@@ -26,9 +26,6 @@ class PostList(object):
             button = urwid.Button(post.title)
             post_list.append(button)
 
-        post_list.insert(0, urwid.Divider())
-        post_list.insert(0, urwid.Text('POST'))
-
         self.list_walker = urwid.SimpleFocusListWalker(post_list)
         self.output = urwid.ListBox(self.list_walker)
 
@@ -56,9 +53,6 @@ class PostList(object):
         for post in self.posts[self.id_index]:
             button = urwid.Button(post.title)
             post_list.append(button)
-
-        post_list.insert(0, urwid.Divider())
-        post_list.insert(0, urwid.Text('POST'))
 
         del self.list_walker[:]
         for item in post_list:
