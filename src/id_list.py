@@ -27,6 +27,7 @@ class IdList(object):
 
     def add(self, id):
         button = urwid.Button(id)
+        urwid.connect_signal(button, 'click', self.on_id_clicked)
         self.list_walker.append(button)
 
     def render(self):

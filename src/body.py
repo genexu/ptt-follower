@@ -31,6 +31,7 @@ class Body(object):
 
     def add_new_id(self, id):
         self.id_list.add(id)
+        self.post_list.update_posts()
 
     def add_new_board(self, board):
         self.board_list.add(board)
