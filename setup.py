@@ -12,6 +12,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        ptt-follower=src.core:run
+        ptt-follower=src.core:App
     ''',
 )
