@@ -3,7 +3,7 @@ import urwid
 DESC = 'DESC'
 ADD_NEW_ID = 'ADD_NEW_ID'
 ADD_NEW_BOARD = 'ADD_NEW_BOARD'
-DEFAULT_DESC = '(I)Add Id (B)Add Board (q/Q)Exit'
+DEFAULT_DESC = '(I)Add Id (B)Add Board (R)Reload (q/Q)Exit'
 DEFAULT_RESPONSE = 'None'
 
 class Footer(object):

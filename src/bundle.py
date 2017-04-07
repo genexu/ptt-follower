@@ -52,6 +52,9 @@ class Bundle(object):
             self.footer.add_new_board()
             self.output.focus_position = 'footer'
 
+        if repr(key) in ("'R'"):
+            self.body.post_list.update_posts()
+
         if repr(key) in ("'esc'"):
             if self.status in (ADD_NEW_ID, ADD_NEW_BOARD):
                 self.status = NORMAL
