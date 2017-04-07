@@ -24,7 +24,11 @@ class PostList(object):
 
         self.update_config()
 
-        self.list_walker = urwid.SimpleFocusListWalker([])
+        bigtext = urwid.BigText('PTT FOLLOWER', urwid.Thin6x6Font())
+        bigtext = urwid.Padding(bigtext, 'center', None)
+        welcome_info = urwid.Text('Welcome, PTTer\nSelect The Board Or Press (R) To Load Post List', align='center')
+
+        self.list_walker = urwid.SimpleFocusListWalker([bigtext, welcome_info])
         self.output = urwid.ListBox(self.list_walker)
 
     def update_id_index(self, index):
