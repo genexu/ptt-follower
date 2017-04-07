@@ -30,6 +30,9 @@ class IdList(object):
         urwid.connect_signal(button, 'click', self.on_id_clicked)
         self.list_walker.append(button)
 
+    def delete(self, id_index):
+        self.list_walker.pop(id_index)
+
     def render(self):
         json_data_list = []
         list_item = []

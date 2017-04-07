@@ -31,6 +31,14 @@ class Footer(object):
     def add_new_board(self):
         self.contents_replace(self.generate(ADD_NEW_BOARD))
 
+    def delete_id(self, index):
+        content = [urwid.Edit(u"Delete Id [%s](y/n): " % index), urwid.Text(u"(Esc) Exit Add Mode", align='right')]
+        self.contents_replace(content)
+
+    def delete_board(self, index):
+        content = [urwid.Edit(u"Delete Board [%s](y/n): " % index), urwid.Text(u"(Esc) Exit Add Mode", align='right')]
+        self.contents_replace(content)
+
     def contents_replace(self, contents):
         self.output.contents = []
         for c in contents:

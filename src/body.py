@@ -40,3 +40,16 @@ class Body(object):
 
     def add_new_board(self, board):
         self.board_list.add(board)
+
+    def delete_id(self, id_index):
+        self.id_list.delete(id_index)
+        self.post_list.update_id_index(0)
+        self.post_list.update_posts()
+
+    def delete_board(self, board_index):
+        self.board_list.delete(board_index)
+        self.id_list.update_board_index(0)
+        self.id_list.render()
+        self.post_list.update_id_index(0)
+        self.post_list.update_board_index(0)
+        self.post_list.update_posts()

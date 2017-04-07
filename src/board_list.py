@@ -28,3 +28,6 @@ class BoardList(object):
         button = urwid.Button(board)
         urwid.connect_signal(button, 'click', self.on_board_clicked)
         self.list_walker.append(button)
+
+    def delete(self, board_index):
+        self.list_walker.pop(board_index)
