@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from post import Post
 import re
+from pprint import pprint
 
 class Crawler(object):
     """Docstring For Crawler."""
@@ -38,12 +39,18 @@ class Crawler(object):
         posts = soup.find_all('div', class_="r-ent")
 
         for post in posts:
-            title = post.find('div', class_="title").get_text().strip()
             meta = post.find('div', class_='meta')
-            date = post.find('div', class_='date').get_text()
             author = meta.find('div', class_='author').get_text()
 
             if author != '-' and author in self.ids:
-                results[self.ids.index(author)].append(Post(title = title, author = author, date = date))
+                title_with_link = post.find('div', class_="title")
+                title = title_with_link.get_text().strip()
+                url = 'None'
+                if title_with_link.a != None:
+                    url = self.domain + title_with_link.a.get('href')
+                date = post.find('div', class_='date').get_text()
+                regex = r"M\.(.*)\.A"
+                timesteap = re.search(regex, url).group(1)
+                results[self.ids.index(author)].append(Post(title = title, author = author, date = date, url = url, timesteap = timesteap))
 
         return results

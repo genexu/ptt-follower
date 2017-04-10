@@ -1,8 +1,10 @@
 import urwid
 import json
 import requests
+import datetime
 from bs4 import BeautifulSoup
 from crawler import Crawler
+
 
 STATUS = {
     'Standby': 'Standby',
@@ -69,7 +71,8 @@ class PostList(object):
         post_list = []
         if len(self.posts) > 0:
             for post in self.posts[self.id_index]:
-                button = urwid.Button(post.title)
+                post_datetime = datetime.datetime.fromtimestamp(int(post.timesteap)).strftime('%Y-%m-%d %H:%M:%S')
+                button = urwid.Button('%s %s' %(post_datetime, post.title))
                 post_list.append(button)
 
         del self.list_walker[:]
