@@ -9,6 +9,7 @@ ADD_NEW_ID = 'ADD_NEW_ID'
 ADD_NEW_BOARD = 'ADD_NEW_BOARD'
 DELETE_ID = 'DELETE_ID'
 DELETE_BOARD = 'DELETE_BOARD'
+UPDATE_CRAWL_NUMBER_OF_PAGE = 'UPDATE_CRAWL_NUMBER_OF_PAGE'
 
 class Bundle(object):
     """docstring for Bundle."""
@@ -44,6 +45,11 @@ class Bundle(object):
         data['follow'].pop(board_index)
         self.write_json_data(data)
 
+    def update_crawl_number_of_page(self, n):
+        data = self.read_json_data()
+        data['settings']['crawl_number_of_page'] = n
+        self.write_json_data(data)
+
     def read_json_data(self):
         with open('data.json', 'r') as data_file:
             return json.load(data_file)
@@ -67,7 +73,7 @@ class Bundle(object):
         if repr(key) in ("'D'"):
             BOARD_LIST_INDEX = 0
             ID_LIST_INDEX = 1
-            
+
             body_content_focus_postion = self.body.content.focus_position
             if body_content_focus_postion in (BOARD_LIST_INDEX, ID_LIST_INDEX):
                 delete_item = self.body.content.focus
@@ -82,11 +88,18 @@ class Bundle(object):
 
                 self.output.focus_position = 'footer'
 
+        if repr(key) in ("'N'"):
+            self.status = UPDATE_CRAWL_NUMBER_OF_PAGE
+            data = self.read_json_data()
+            n = data['settings']['crawl_number_of_page']
+            self.footer.update_crawl_number_of_page(n)
+            self.output.focus_position = 'footer'
+
         if repr(key) in ("'R'"):
             self.body.post_list.update_posts()
 
         if repr(key) in ("'esc'"):
-            if self.status in (ADD_NEW_ID, ADD_NEW_BOARD, DELETE_ID, DELETE_BOARD):
+            if self.status in (ADD_NEW_ID, ADD_NEW_BOARD, DELETE_ID, DELETE_BOARD, UPDATE_CRAWL_NUMBER_OF_PAGE):
                 self.status = NORMAL
                 self.footer.desc()
                 self.output.focus_position = 'body'
@@ -122,7 +135,13 @@ class Bundle(object):
                     self.delete_board(delete_item_position)
                     self.body.delete_board(delete_item_position)
 
-            if self.status in (ADD_NEW_ID, ADD_NEW_BOARD, DELETE_ID, DELETE_BOARD):
+            if self.status in (UPDATE_CRAWL_NUMBER_OF_PAGE):
+                n = int(self.footer.output.focus.edit_text)
+                if isinstance( n, int ) and n > 0:
+                    self.update_crawl_number_of_page(n)
+                    self.body.update_crawl_number_of_page(n)
+
+            if self.status in (ADD_NEW_ID, ADD_NEW_BOARD, DELETE_ID, DELETE_BOARD, UPDATE_CRAWL_NUMBER_OF_PAGE):
                 self.status = NORMAL
                 self.footer.desc()
                 self.output.focus_position = 'body'

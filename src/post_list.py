@@ -40,6 +40,9 @@ class PostList(object):
         self.board_index = index
         self.update_config()
 
+    def update_crawl_number_of_page(self, n):
+        self.crawl_number_of_page = n
+
     def update_config(self):
         with open('data.json') as data_file:
             data_loaded = json.load(data_file)

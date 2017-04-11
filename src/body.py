@@ -53,3 +53,7 @@ class Body(object):
         self.post_list.update_id_index(0)
         self.post_list.update_board_index(0)
         self.post_list.update_posts()
+
+    def update_crawl_number_of_page(self, n):
+        self.post_list.update_crawl_number_of_page(n)
+        self.post_list.update_posts()

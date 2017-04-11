@@ -3,7 +3,7 @@ import urwid
 DESC = 'DESC'
 ADD_NEW_ID = 'ADD_NEW_ID'
 ADD_NEW_BOARD = 'ADD_NEW_BOARD'
-DEFAULT_DESC = '(I)Add Id (B)Add Board (R)Reload (q/Q)Exit'
+DEFAULT_DESC = '(I)Add Id (B)Add Board (N)Edit Crawl Number Of Page (R)Reload (q/Q)Exit'
 DEFAULT_RESPONSE = 'None'
 
 class Footer(object):
@@ -37,6 +37,13 @@ class Footer(object):
 
     def delete_board(self, index):
         content = [urwid.Edit(u"Delete Board [%s](y/n): " % index), urwid.Text(u"(Esc) Exit Add Mode", align='right')]
+        self.contents_replace(content)
+
+    def update_crawl_number_of_page(self, n):
+        edit = urwid.Edit(u"Crawl Number Of Page: ")
+        edit.set_edit_text(str(n))
+        text = urwid.Text(u"(Esc) Exit Edit Mode", align='right')
+        content = [edit, text]
         self.contents_replace(content)
 
     def contents_replace(self, contents):
