@@ -61,6 +61,9 @@ class PostList(object):
         crawler = Crawler(board = self.board, ids = self.ids)
         self.posts = crawler.request()
 
+        if crawler.previous_page == False:
+            return
+            
         for page in range(self.crawl_number_of_page - 1):
             crawler.url = crawler.domain + crawler.previous_page
             previous_page_post = crawler.request()

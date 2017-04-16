@@ -19,7 +19,10 @@ class Crawler(object):
         self.url = self.domain + '/bbs/' + self.board + '/index.html'
 
     def request(self):
-        r = requests.get(self.url)
+        try:
+            r = requests.get(self.url, timeout=3)
+        except requests.exceptions.RequestException as e:
+            return []
 
         if r.status_code != requests.codes.ok:
             return []
