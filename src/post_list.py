@@ -26,11 +26,9 @@ class PostList(object):
 
         self.update_config()
 
-        bigtext = urwid.BigText('PTT FOLLOWER', urwid.Thin6x6Font())
-        bigtext = urwid.Padding(bigtext, 'center', None)
         welcome_info = urwid.Text('Welcome, PTTer\nSelect The Board Or Press (R) To Load Post List', align='center')
 
-        self.list_walker = urwid.SimpleFocusListWalker([bigtext, welcome_info])
+        self.list_walker = urwid.SimpleFocusListWalker([welcome_info])
         self.output = urwid.ListBox(self.list_walker)
 
     def update_id_index(self, index):
@@ -63,7 +61,7 @@ class PostList(object):
 
         if crawler.previous_page == False:
             return
-            
+
         for page in range(self.crawl_number_of_page - 1):
             crawler.url = crawler.domain + crawler.previous_page
             previous_page_post = crawler.request()
