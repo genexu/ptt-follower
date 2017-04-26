@@ -21,8 +21,11 @@ class PostList(object):
         self.ids = ids
         self.board = board
         self.posts = posts
+        self.crawler = Crawler(board = self.board, ids = self.ids)
         self.crawl_number_of_page = crawl_number_of_page
+        self.crawl_number_now = 0
         self.status = STATUS['Standby']
+
 
         self.update_config()
 
@@ -56,18 +59,27 @@ class PostList(object):
 
 
     def crawl_posts(self):
-        crawler = Crawler(board = self.board, ids = self.ids)
-        self.posts = crawler.request()
+        self.crawler.board = self.board
+        self.crawler.ids = self.ids
+        self.crawler.init_url()
 
-        if crawler.previous_page == False:
-            return
+        del self.list_walker[:]
+        self.list_walker.append(urwid.Text('Posts Updating...(%s/%s)' % (self.crawl_number_now, self.crawl_number_of_page)))
 
-        for page in range(self.crawl_number_of_page - 1):
-            crawler.url = crawler.domain + crawler.previous_page
-            previous_page_post = crawler.request()
+        if self.crawl_number_now == 0:
+            self.posts = self.crawler.request()
+        else:
+            self.crawler.url = self.crawler.domain + self.crawler.previous_page
+            previous_page_post = self.crawler.request()
             for index in range(len(self.posts)):
                 self.posts[index].extend(previous_page_post[index])
-        self.status = STATUS['WaitingForRender']
+
+        self.crawl_number_now += 1
+
+        if self.crawler.previous_page == False or self.crawl_number_now > self.crawl_number_of_page:
+            self.crawl_number_now = 0
+            self.status = STATUS['WaitingForRender']
+            return
 
     def render(self):
         self.update_config()
