@@ -62,7 +62,7 @@ class Crawler(object):
                 if title_with_link.a != None:
                     url = self.domain + title_with_link.a.get('href')
                 date = post.find('div', class_='date').get_text()
-                regex = r"M\.(.*)\.A"
+                regex = r"M\.(.[0-9]*)\.A"
                 timesteap = re.search(regex, url).group(1)
                 results[self.ids.index(author)].append(Post(title = title, author = author, date = date, url = url, timesteap = timesteap))
 
