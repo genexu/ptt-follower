@@ -4,7 +4,9 @@ import requests
 import datetime
 from bs4 import BeautifulSoup
 from crawler import Crawler
-
+import subprocess
+import webbrowser
+import sys
 
 STATUS = {
     'Standby': 'Standby',
@@ -81,6 +83,13 @@ class PostList(object):
             self.status = STATUS['WaitingForRender']
             return
 
+    def on_post_clicked(self, button):
+        post_position = self.output.focus_position
+        if sys.platform == 'darwin':
+            subprocess.Popen(['open', self.posts[self.id_index][post_position].url])
+        else:
+            webbrowser.open_new_tab(self.posts[self.id_index][post_position].url)
+
     def render(self):
         self.update_config()
 
@@ -89,6 +98,7 @@ class PostList(object):
             for post in self.posts[self.id_index]:
                 post_datetime = datetime.datetime.fromtimestamp(int(post.timesteap)).strftime('%Y-%m-%d %H:%M:%S')
                 button = urwid.Button('%s %s' %(post_datetime, post.title))
+                urwid.connect_signal(button, 'click', self.on_post_clicked)
                 post_list.append(button)
 
         del self.list_walker[:]
