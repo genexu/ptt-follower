@@ -30,6 +30,16 @@ class Crawler(object):
         results = [[] for _ in range(len(self.ids))]
 
         soup = BeautifulSoup(r.text, 'html.parser')
+        isAsk18 = soup.find('div', attrs = {'class' : 'over18-notice'})
+        if isAsk18:
+            payload = {
+                'from': '/bbs/Gossiping/index.html',
+                'yes': 'yes'
+            }
+            rs = requests.session()
+            r = rs.post(self.domain + '/ask/over18', timeout=3, data=payload)
+            r = rs.get(self.url, timeout=3)
+            soup = BeautifulSoup(r.text, 'html.parser')
 
         previous_page = soup.find('a', text = re.compile(unicode("上頁", "utf8")), attrs = {'class' : 'btn wide'})
         if previous_page:
